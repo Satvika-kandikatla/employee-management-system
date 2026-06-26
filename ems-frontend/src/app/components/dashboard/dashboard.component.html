@@ -1,0 +1,79 @@
+<app-navbar></app-navbar>
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Welcome back, {{ authService.getUserName() }}!</p>
+      </div>
+      <button mat-raised-button color="primary" routerLink="/employees/add"
+              *ngIf="authService.isAdmin()">
+        <mat-icon>person_add</mat-icon> Add Employee
+      </button>
+    </div>
+
+    <div class="stats-grid">
+      <mat-card class="stat-card blue">
+        <mat-card-content>
+          <div class="stat-icon"><mat-icon>people</mat-icon></div>
+          <div class="stat-info">
+            <div class="stat-number">{{ stats.totalEmployees }}</div>
+            <div class="stat-label">Total Employees</div>
+          </div>
+        </mat-card-content>
+        <div class="card-footer"><a routerLink="/employees">View All →</a></div>
+      </mat-card>
+
+      <mat-card class="stat-card green">
+        <mat-card-content>
+          <div class="stat-icon"><mat-icon>domain</mat-icon></div>
+          <div class="stat-info">
+            <div class="stat-number">{{ stats.totalDepartments }}</div>
+            <div class="stat-label">Departments</div>
+          </div>
+        </mat-card-content>
+        <div class="card-footer"><span>Active departments</span></div>
+      </mat-card>
+    </div>
+
+    <mat-card class="recent-card">
+      <mat-card-header>
+        <mat-card-title>Recently Added Employees</mat-card-title>
+        <span class="spacer"></span>
+        <a routerLink="/employees" class="view-all-link">View All</a>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="loading-spinner" *ngIf="isLoading">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+        <table class="employees-table" *ngIf="!isLoading">
+          <thead>
+            <tr><th>#</th><th>Name</th><th>Email</th><th>Department</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let emp of recentEmployees; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <div class="emp-name">
+                  <div class="avatar">{{ emp.name.charAt(0).toUpperCase() }}</div>
+                  {{ emp.name }}
+                </div>
+              </td>
+              <td>{{ emp.email }}</td>
+              <td><span class="dept-badge">{{ emp.department }}</span></td>
+              <td>
+                <a [routerLink]="['/employees/profile', emp.id]" class="view-link">
+                  <mat-icon>visibility</mat-icon> View
+                </a>
+              </td>
+            </tr>
+            <tr *ngIf="recentEmployees.length === 0">
+              <td colspan="5" class="no-data">No employees found</td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

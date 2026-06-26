@@ -1,0 +1,19 @@
+# Backend
+ems-backend/target/
+ems-backend/.mvn/
+ems-backend/*.log
+
+# Frontend
+ems-frontend/node_modules/
+ems-frontend/dist/
+ems-frontend/.angular/
+ems-frontend/*.log
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

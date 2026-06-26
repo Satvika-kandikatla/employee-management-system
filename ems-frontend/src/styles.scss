@@ -1,0 +1,46 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: (
+      primary: mat.$violet-palette,
+      tertiary: mat.$rose-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+  background: #F8F9FF;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #CE93D8; border-radius: 3px; }
+
+.snack-success .mdc-snackbar__surface {
+  background-color: #6A1B9A !important;
+  color: white !important;
+}
+
+.snack-error .mdc-snackbar__surface {
+  background-color: #C62828 !important;
+  color: white !important;
+}
+
+.cdk-overlay-container {
+  z-index: 99999 !important;
+}

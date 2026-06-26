@@ -1,0 +1,136 @@
+<app-navbar></app-navbar>
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+
+    <div class="loading-center" *ngIf="isLoading">
+      <mat-spinner diameter="52"></mat-spinner>
+      <p>Loading profile...</p>
+    </div>
+
+    <mat-card class="error-card" *ngIf="!isLoading && errorMessage">
+      <mat-icon color="warn">error_outline</mat-icon>
+      <h3>{{ errorMessage }}</h3>
+      <button mat-raised-button color="primary" routerLink="/employees">
+        Back to List
+      </button>
+    </mat-card>
+
+    <div *ngIf="!isLoading && employee">
+      <div class="page-header">
+        <div>
+          <h1>Employee Profile</h1>
+          <p>Viewing profile for {{ employee.name }}</p>
+        </div>
+        <div class="header-actions">
+          <button mat-stroked-button routerLink="/employees">
+            <mat-icon>arrow_back</mat-icon> Back
+          </button>
+          <button mat-raised-button color="accent"
+                  [routerLink]="['/employees/edit', employee.id]"
+                  *ngIf="authService.isAdmin()">
+            <mat-icon>edit</mat-icon> Edit Employee
+          </button>
+        </div>
+      </div>
+
+      <div class="profile-layout">
+        <mat-card class="avatar-card">
+          <mat-card-content>
+            <div class="profile-avatar"
+                 [style.background]="getDeptColor(employee.department)">
+              {{ getInitials(employee.name) }}
+            </div>
+            <h2 class="profile-name">{{ employee.name }}</h2>
+            <p class="profile-email">{{ employee.email }}</p>
+            <div class="dept-chip"
+                 [style.background]="getDeptColor(employee.department) + '20'"
+                 [style.color]="getDeptColor(employee.department)">
+              {{ employee.department }}
+            </div>
+            <mat-divider class="divider"></mat-divider>
+            <div class="quick-stat">
+              <mat-icon>badge</mat-icon>
+              <div>
+                <div class="stat-label">Employee ID</div>
+                <div class="stat-value">#{{ employee.id }}</div>
+              </div>
+            </div>
+            <div class="quick-stat">
+              <mat-icon>verified_user</mat-icon>
+              <div>
+                <div class="stat-label">Role</div>
+                <div class="stat-value">{{ employee.role }}</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <div class="details-column">
+          <mat-card class="details-card">
+            <mat-card-header>
+              <mat-card-title>Personal Information</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="info-grid">
+                <div class="info-item">
+                  <div class="info-label"><mat-icon>person</mat-icon> Full Name</div>
+                  <div class="info-value">{{ employee.name }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label"><mat-icon>email</mat-icon> Email Address</div>
+                  <div class="info-value">{{ employee.email }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label"><mat-icon>phone</mat-icon> Mobile Number</div>
+                  <div class="info-value">{{ employee.mobile }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label"><mat-icon>domain</mat-icon> Department</div>
+                  <div class="info-value">{{ employee.department }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label"><mat-icon>calendar_today</mat-icon> Joined On</div>
+                  <div class="info-value">{{ employee.createdAt | date:'MMMM d, yyyy' }}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label"><mat-icon>shield</mat-icon> Access Role</div>
+                  <div class="info-value">
+                    <span class="role-chip" [class.admin]="employee.role === 'ADMIN'">
+                      {{ employee.role }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="activity-card">
+            <mat-card-header>
+              <mat-card-title>Account Activity</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <div>
+                  <div class="activity-title">Account Created</div>
+                  <div class="activity-date">
+                    {{ employee.createdAt | date:'MMM d, yyyy h:mm a' }}
+                  </div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot active"></div>
+                <div>
+                  <div class="activity-title">Profile Active</div>
+                  <div class="activity-date">Currently active in the system</div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

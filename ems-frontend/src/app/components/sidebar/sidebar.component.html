@@ -1,0 +1,21 @@
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <mat-icon>manage_accounts</mat-icon>
+    <span>EMS</span>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-nav-list class="nav-list">
+    <a mat-list-item
+       *ngFor="let item of visibleItems"
+       [routerLink]="item.route"
+       routerLinkActive="active-link"
+       class="nav-item">
+      <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+      <span matListItemTitle>{{ item.label }}</span>
+    </a>
+  </mat-nav-list>
+  <div class="sidebar-footer">
+    <mat-divider></mat-divider>
+    <div class="version-info">v1.0.0</div>
+  </div>
+</div>

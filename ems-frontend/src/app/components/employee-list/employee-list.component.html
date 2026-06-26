@@ -1,0 +1,118 @@
+<app-navbar></app-navbar>
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+
+    <div class="page-header">
+      <div class="header-text">
+        <h1>Employees</h1>
+        <p>{{ totalEmployees }} employee(s) found</p>
+      </div>
+      <a routerLink="/employees/add" class="add-btn" *ngIf="authService.isAdmin()">
+        <mat-icon>person_add</mat-icon>
+        <span>Add Employee</span>
+      </a>
+    </div>
+
+    <!-- Search Bar -->
+    <mat-card class="search-card">
+      <div class="search-wrapper">
+        <mat-icon>search</mat-icon>
+        <input type="text" [(ngModel)]="searchKeyword"
+               (ngModelChange)="onSearch($event)"
+               placeholder="Search by name, email or department...">
+        <button class="clear-btn" *ngIf="searchKeyword" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+
+    <!-- Employee Table -->
+    <mat-card class="table-card">
+      <!-- Loading -->
+      <div class="loading-spinner" *ngIf="isLoading">
+        <mat-spinner diameter="48"></mat-spinner>
+        <p>Loading employees...</p>
+      </div>
+
+      <div *ngIf="!isLoading">
+        <!-- Table -->
+        <table class="employees-table" *ngIf="pagedEmployees.length > 0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Employee</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Department</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let emp of pagedEmployees; let i = index">
+              <td class="index-col">
+                {{ pageIndex * pageSize + i + 1 }}
+              </td>
+              <td>
+                <div class="emp-name">
+                  <div class="avatar">{{ getInitials(emp.name) }}</div>
+                  <div>
+                    <div class="emp-full-name">{{ emp.name }}</div>
+                    <div class="emp-id">ID: {{ emp.id }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>{{ emp.email }}</td>
+              <td>{{ emp.mobile }}</td>
+              <td><span class="dept-badge">{{ emp.department }}</span></td>
+              <td>
+                <div class="action-btns">
+                  <button mat-icon-button color="primary"
+                          [routerLink]="['/employees/profile', emp.id]"
+                          matTooltip="View Profile">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button mat-icon-button color="accent"
+                          [routerLink]="['/employees/edit', emp.id]"
+                          matTooltip="Edit"
+                          *ngIf="authService.isAdmin()">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn"
+                          (click)="deleteEmployee(emp.id, emp.name)"
+                          matTooltip="Delete"
+                          *ngIf="authService.isAdmin()">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <mat-paginator
+          *ngIf="filteredEmployees.length > 0"
+          [length]="filteredEmployees.length"
+          [pageSize]="pageSize"
+          [pageIndex]="pageIndex"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="pagedEmployees.length === 0">
+          <mat-icon>people_outline</mat-icon>
+          <h3>No employees found</h3>
+          <p *ngIf="searchKeyword">
+            No results for "{{ searchKeyword }}".
+            <span (click)="clearSearch()" class="clear-link">Clear search</span>
+          </p>
+          <p *ngIf="!searchKeyword">No employees in the system yet.</p>
+        </div>
+      </div>
+    </mat-card>
+
+  </div>
+</div>

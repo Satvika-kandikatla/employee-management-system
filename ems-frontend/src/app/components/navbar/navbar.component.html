@@ -1,0 +1,38 @@
+<mat-toolbar class="navbar">
+  <div class="navbar-brand">
+    <mat-icon>business</mat-icon>
+    <span>EMS Portal</span>
+  </div>
+  <span class="spacer"></span>
+  <div class="navbar-actions">
+    <span class="user-greeting">
+      <mat-icon>account_circle</mat-icon>
+      {{ authService.getUserName() }}
+      <span class="role-badge" [class.admin]="authService.isAdmin()">
+        {{ authService.getUser()?.role }}
+      </span>
+    </span>
+    <button 
+  mat-icon-button
+  [matMenuTriggerFor]="userMenu"
+  #menuTrigger="matMenuTrigger">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu
+  #userMenu="matMenu"
+  xPosition="before"
+  yPosition="below"
+  overlapTrigger="false">
+      <button mat-menu-item routerLink="/dashboard">
+        <mat-icon>dashboard</mat-icon> Dashboard
+      </button>
+      <button mat-menu-item routerLink="/employees">
+        <mat-icon>people</mat-icon> Employees
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon color="warn">logout</mat-icon> Logout
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

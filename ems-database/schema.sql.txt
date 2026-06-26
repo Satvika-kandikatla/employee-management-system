@@ -1,0 +1,26 @@
+CREATE DATABASE IF NOT EXISTS employee_management_db;
+USE employee_management_db;
+
+CREATE TABLE IF NOT EXISTS employees (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(100)        NOT NULL,
+    email       VARCHAR(150)        NOT NULL UNIQUE,
+    mobile      VARCHAR(15)         NOT NULL,
+    department  VARCHAR(100)        NOT NULL,
+    password    VARCHAR(255)        NOT NULL,
+    role        ENUM('ADMIN','EMPLOYEE') NOT NULL DEFAULT 'EMPLOYEE',
+    created_at  TIMESTAMP           DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP           DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO employees (name, email, mobile, department, password, role) VALUES
+('Admin User',     'admin@company.com',   '9000000001', 'Administration', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'ADMIN'),
+('Alice Johnson',  'alice@company.com',   '9000000002', 'Engineering',    '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'EMPLOYEE'),
+('Bob Smith',      'bob@company.com',     '9000000003', 'Marketing',      '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'EMPLOYEE'),
+('Carol White',    'carol@company.com',   '9000000004', 'Human Resources','$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'EMPLOYEE'),
+('David Brown',    'david@company.com',   '9000000005', 'Finance',        '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'EMPLOYEE'),
+('Eva Martinez',   'eva@company.com',     '9000000006', 'Engineering',    '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'EMPLOYEE'),
+('Frank Wilson',   'frank@company.com',   '9000000007', 'Sales',          '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'EMPLOYEE'),
+('Grace Lee',      'grace@company.com',   '9000000008', 'Design',         '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'EMPLOYEE'),
+('Henry Taylor',   'henry@company.com',   '9000000009', 'Operations',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'EMPLOYEE'),
+('Iris Anderson',  'iris@company.com',    '9000000010', 'Marketing',      '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'EMPLOYEE');
