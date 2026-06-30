@@ -8,6 +8,7 @@
   height: 64px;
   padding: 0 24px;
   border-bottom: 2px solid #F3E5F5;
+  transition: background 0.3s ease;
 }
 .navbar-brand {
   display: flex;
@@ -56,5 +57,9 @@
   color: white;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+.role-badge.admin { background: #4A148C; }
+.theme-btn {
+  color: #6A1B9A !important;
 }
 .menu-btn { color: #6A1B9A !important; }

@@ -1,0 +1,220 @@
+<app-navbar></app-navbar>
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-text">
+        <h1>Attendance</h1>
+        <p>Track your daily check-in and check-out</p>
+      </div>
+      <!-- Live Clock -->
+      <div class="live-clock">
+        <mat-icon>schedule</mat-icon>
+        <div>
+          <div class="time">{{ currentTime | date:'hh:mm:ss a' }}</div>
+          <div class="date">{{ currentTime | date:'EEEE, MMM d, yyyy' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Check In/Out Card -->
+    <div class="attendance-grid">
+
+      <!-- Today's Status Card -->
+      <mat-card class="checkin-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>fingerprint</mat-icon>
+            Today's Attendance
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="loading-center" *ngIf="isLoading">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div>
+
+          <div *ngIf="!isLoading">
+            <!-- Status Badge -->
+            <div class="status-badge" [class.checked-in]="todayStatus?.checkedIn"
+                 [class.checked-out]="todayStatus?.checkedOut">
+              <mat-icon>
+                {{ todayStatus?.checkedOut ? 'check_circle' :
+                   todayStatus?.checkedIn ? 'radio_button_checked' : 'radio_button_unchecked' }}
+              </mat-icon>
+              <span>
+                {{ todayStatus?.checkedOut ? 'Checked Out' :
+                   todayStatus?.checkedIn ? 'Checked In' : 'Not Checked In' }}
+              </span>
+            </div>
+
+            <!-- Time Info -->
+            <div class="time-info" *ngIf="todayStatus?.checkedIn">
+              <div class="time-row">
+                <div class="time-item">
+                  <div class="time-label">
+                    <mat-icon>login</mat-icon> Check In
+                  </div>
+                  <div class="time-value green">
+                    {{ formatTime(todayStatus?.checkInTime || '') }}
+                  </div>
+                </div>
+                <div class="time-divider">→</div>
+                <div class="time-item">
+                  <div class="time-label">
+                    <mat-icon>logout</mat-icon> Check Out
+                  </div>
+                  <div class="time-value red">
+                    {{ todayStatus?.checkedOut ?
+                       formatTime(todayStatus?.checkOutTime || '') : '--' }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="duration-badge" *ngIf="todayStatus?.duration">
+                <mat-icon>timer</mat-icon>
+                Duration: {{ todayStatus?.duration }}
+              </div>
+            </div>
+
+            <!-- Message -->
+            <p class="status-message">{{ todayStatus?.message }}</p>
+
+            <!-- Action Buttons -->
+            <div class="action-btns">
+              <button class="checkin-btn"
+                      (click)="checkIn()"
+                      [disabled]="todayStatus?.checkedIn || isActionLoading">
+                <mat-spinner diameter="20" *ngIf="isActionLoading && !todayStatus?.checkedIn"></mat-spinner>
+                <mat-icon *ngIf="!isActionLoading || todayStatus?.checkedIn">login</mat-icon>
+                <span>Check In</span>
+              </button>
+
+              <button class="checkout-btn"
+                      (click)="checkOut()"
+                      [disabled]="!todayStatus?.checkedIn || todayStatus?.checkedOut || isActionLoading">
+                <mat-spinner diameter="20" *ngIf="isActionLoading && todayStatus?.checkedIn && !todayStatus?.checkedOut"></mat-spinner>
+                <mat-icon *ngIf="!isActionLoading || !todayStatus?.checkedIn || todayStatus?.checkedOut">logout</mat-icon>
+                <span>Check Out</span>
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Stats Card -->
+      <mat-card class="stats-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>bar_chart</mat-icon>
+            This Month
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="month-stat">
+            <div class="stat-circle">
+              <span class="stat-num">{{ presentDays }}</span>
+              <span class="stat-label">Days</span>
+            </div>
+            <div class="stat-info">
+              <h3>Present Days</h3>
+              <p>{{ currentTime | date:'MMMM yyyy' }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+    <!-- Admin: Today's All Attendance -->
+    <mat-card class="history-card" *ngIf="authService.isAdmin()">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>groups</mat-icon>
+          Today's Attendance — All Employees
+        </mat-card-title>
+        <span class="spacer"></span>
+        <span class="count-badge">{{ allTodayAttendance.length }} present</span>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="empty-state" *ngIf="allTodayAttendance.length === 0">
+          <mat-icon>event_busy</mat-icon>
+          <p>No employee has checked in today yet</p>
+        </div>
+        <table class="att-table" *ngIf="allTodayAttendance.length > 0">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Department</th>
+              <th>Check In</th>
+              <th>Check Out</th>
+              <th>Duration</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let att of allTodayAttendance">
+              <td>
+                <div class="emp-cell">
+                  <div class="avatar">{{ att.employeeName.charAt(0) }}</div>
+                  {{ att.employeeName }}
+                </div>
+              </td>
+              <td><span class="dept-badge">{{ att.department }}</span></td>
+              <td class="time-cell green">{{ formatTime(att.checkIn) }}</td>
+              <td class="time-cell red">{{ att.checkOut ? formatTime(att.checkOut) : '—' }}</td>
+              <td>{{ att.duration || '—' }}</td>
+              <td>
+                <span class="status-chip" [class]="att.status.toLowerCase()">
+                  {{ att.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- My Attendance History -->
+    <mat-card class="history-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>history</mat-icon>
+          My Attendance History
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="empty-state" *ngIf="attendanceHistory.length === 0">
+          <mat-icon>event_note</mat-icon>
+          <p>No attendance records found</p>
+        </div>
+        <table class="att-table" *ngIf="attendanceHistory.length > 0">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Check In</th>
+              <th>Check Out</th>
+              <th>Duration</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let att of attendanceHistory">
+              <td>{{ formatDate(att.workDate) }}</td>
+              <td class="time-cell green">{{ formatTime(att.checkIn) }}</td>
+              <td class="time-cell red">{{ att.checkOut ? formatTime(att.checkOut) : '—' }}</td>
+              <td>{{ att.duration || '—' }}</td>
+              <td>
+                <span class="status-chip" [class]="att.status.toLowerCase()">
+                  {{ att.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>

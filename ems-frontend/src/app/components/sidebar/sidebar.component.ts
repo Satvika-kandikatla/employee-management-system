@@ -22,10 +22,11 @@ interface NavItem {
 })
 export class SidebarComponent {
   navItems: NavItem[] = [
-    { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
-    { label: 'Employee List', icon: 'people', route: '/employees' },
-    { label: 'Add Employee', icon: 'person_add', route: '/employees/add', adminOnly: true },
-  ];
+  { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
+  { label: 'Employee List', icon: 'people', route: '/employees' },
+  { label: 'Attendance', icon: 'fingerprint', route: '/attendance' },
+  { label: 'Add Employee', icon: 'person_add', route: '/employees/add', adminOnly: true },
+];
 
   constructor(public authService: AuthService) {}
 

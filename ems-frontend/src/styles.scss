@@ -12,6 +12,18 @@ html {
   ));
 }
 
+html.dark-mode {
+  color-scheme: dark;
+  @include mat.theme((
+    color: (
+      primary: mat.$violet-palette,
+      tertiary: mat.$rose-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -25,17 +37,164 @@ html, body {
   background: #F8F9FF;
   color: #333;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* ── Dark Mode Body ── */
+html.dark-mode body {
+  background: #121212;
+  color: #E0E0E0;
+}
+
+html.dark-mode .main-content {
+  background: #121212 !important;
+}
+
+html.dark-mode .page-layout {
+  background: #121212 !important;
+}
+
+/* ── Dark Mode Cards ── */
+html.dark-mode mat-card,
+html.dark-mode .mat-mdc-card {
+  background: #1E1E2E !important;
+  color: #E0E0E0 !important;
+}
+
+/* ── Dark Mode Table ── */
+html.dark-mode .employees-table thead tr {
+  background: #2A2A3E !important;
+}
+
+html.dark-mode .employees-table th {
+  color: #CE93D8 !important;
+  border-bottom-color: #3A3A5E !important;
+}
+
+html.dark-mode .employees-table td {
+  color: #E0E0E0 !important;
+  border-bottom-color: #2A2A3E !important;
+}
+
+html.dark-mode .employees-table tr:hover td {
+  background: #2A2A3E !important;
+}
+
+/* ── Dark Mode Sidebar ── */
+html.dark-mode .sidebar {
+  background: #1A1A2E !important;
+  border-right-color: #2A2A4E !important;
+}
+
+html.dark-mode .nav-item {
+  color: rgba(255,255,255,0.7) !important;
+}
+
+html.dark-mode .nav-item:hover {
+  background: rgba(255,255,255,0.08) !important;
+}
+
+html.dark-mode .active-link {
+  background: rgba(206,147,216,0.15) !important;
+  color: #CE93D8 !important;
+}
+
+/* ── Dark Mode Navbar ── */
+html.dark-mode .navbar {
+  background: #1A1A2E !important;
+  border-bottom-color: #2A2A4E !important;
+}
+
+html.dark-mode .navbar-brand {
+  color: #CE93D8 !important;
+}
+
+html.dark-mode .user-greeting {
+  background: #2A2A4E !important;
+  color: #E0E0E0 !important;
+}
+
+/* ── Dark Mode Search ── */
+html.dark-mode .search-wrapper {
+  background: #1E1E2E !important;
+}
+
+html.dark-mode .search-wrapper input {
+  color: #E0E0E0 !important;
+  background: transparent !important;
+}
+
+/* ── Dark Mode Badges ── */
+html.dark-mode .dept-badge {
+  background: #3A1A5E !important;
+  color: #CE93D8 !important;
+}
+
+/* ── Dark Mode Stat Cards ── */
+html.dark-mode .stat-card.blue .card-footer {
+  background: #1A0A2E !important;
+}
+
+html.dark-mode .stat-card.green .card-footer {
+  background: #2E0A1A !important;
+}
+
+html.dark-mode .stat-number {
+  color: #E0E0E0 !important;
+}
+
+html.dark-mode .stat-label {
+  color: #aaa !important;
+}
+
+/* ── Dark Mode Form Fields ── */
+html.dark-mode .mat-mdc-form-field {
+  color: #E0E0E0 !important;
+}
+
+html.dark-mode .input-wrapper {
+  background: #2A2A3E !important;
+  border-color: #3A3A5E !important;
+}
+
+html.dark-mode .input-wrapper input {
+  color: #E0E0E0 !important;
+}
+
+/* ── Dark Mode Info Items ── */
+html.dark-mode .info-item {
+  background: #2A2A3E !important;
+  border-color: #3A3A5E !important;
+}
+
+html.dark-mode .info-value {
+  color: #E0E0E0 !important;
+}
+
+html.dark-mode .header-text h1 {
+  color: #E0E0E0 !important;
+}
+
+html.dark-mode .header-text p {
+  color: #aaa !important;
+}
+
+html.dark-mode .page-header h1 {
+  color: #E0E0E0 !important;
+}
+
+/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: #CE93D8; border-radius: 3px; }
 
+html.dark-mode ::-webkit-scrollbar-track { background: #1E1E2E; }
+
+/* ── Snackbar ── */
 .snack-success .mdc-snackbar__surface {
   background-color: #6A1B9A !important;
   color: white !important;
 }
-
 .snack-error .mdc-snackbar__surface {
   background-color: #C62828 !important;
   color: white !important;

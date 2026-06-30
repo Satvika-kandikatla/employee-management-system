@@ -120,3 +120,38 @@ mat-paginator {
   border-top: 1px solid #F0E6FF;
   background: #FAFAFA;
 }
+/* ===== DARK MODE PAGINATOR FIX ===== */
+
+::ng-deep .mat-mdc-paginator {
+  background: #1E1B2E !important;
+  color: #ffffff !important;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+::ng-deep .mat-mdc-paginator-container {
+  color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-paginator-range-label {
+  color: #B39DDB !important;
+}
+
+::ng-deep .mat-mdc-paginator-page-size-label {
+  color: #B39DDB !important;
+}
+
+::ng-deep .mat-mdc-select-value {
+  color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-select-arrow {
+  color: #ffffff !important;
+}
+
+::ng-deep .mat-mdc-icon-button {
+  color: #B39DDB !important;
+}
+
+::ng-deep .mat-mdc-icon-button[disabled] {
+  color: rgba(255,255,255,0.3) !important;
+}

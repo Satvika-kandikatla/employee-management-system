@@ -50,3 +50,25 @@ export interface LoggedInUser {
   email: string;
   role: string;
 }
+export interface AttendanceTodayStatus {
+  checkedIn: boolean;
+  checkedOut: boolean;
+  checkInTime: string;
+  checkOutTime: string;
+  duration: string;
+  message: string;
+}
+
+export interface AttendanceRecord {
+  id: number;
+  employeeId: number;
+  employeeName: string;
+  employeeEmail: string;
+  department: string;
+  checkIn: string;
+  checkOut: string;
+  workDate: string;
+  duration: string;
+  status: string;
+  checkedOut: boolean;
+}

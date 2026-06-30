@@ -6,8 +6,14 @@ import { EmployeeListComponent } from './components/employee-list/employee-list.
 import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
 import { EmployeeProfileComponent } from './components/employee-profile/employee-profile.component';
 import { authGuard, adminGuard } from './guards/auth.guard';
+import { AttendanceComponent } from './components/attendance/attendance.component';
 
 export const routes: Routes = [
+  {
+  path: 'attendance',
+  component: AttendanceComponent,
+  canActivate: [authGuard]
+},
   // Default
   { path: '', redirectTo: '/admin/login', pathMatch: 'full' },
 
